@@ -1,14 +1,20 @@
+import EditarEntidad from "../utils/EditarEntidad";
+import { urlCines } from "../utils/endpoints";
+import { cinesCreacionDTO, cinesDTO } from "./Cines.mode";
 import FormularioCines from "./FormularioCines";
 
 export default function EditarCines(){
     return(
-        <>
-           <h3>Editar cines</h3>
-           <FormularioCines 
-                modelo={{nombre:'Editar cines',
-                latitud:30.50663751338264,
-                longitud:-115.92919349670412}}
-                onSubmit={valor => console.log(valor)}/>
-        </>
+        <EditarEntidad<cinesCreacionDTO,cinesDTO>
+        url={urlCines} urlIndice='/cines' nombreEntidad='Cines'>
+            {(entidad,editar)=>
+                <FormularioCines
+                modelo={entidad}
+                onSubmit={async  valores=>{
+                    await editar(valores)
+                }}/>
+            
+            }
+        </EditarEntidad>
     )
 }

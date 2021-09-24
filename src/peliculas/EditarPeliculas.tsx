@@ -1,37 +1,69 @@
-import { actorPeliculaDTO } from "../actores/actores.model";
-import { cinesDTO } from "../cines/Cines.mode";
-import { generoDTO } from "../generos/generos.model";
+import axios, { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
+import Cargando from "../utils/Cargando";
+import { urlPeliculas } from "../utils/endpoints";
+import { convertirPeliculasAFormData } from "../utils/FormDate";
+import MostrarErrores from "../utils/MostrarErrores";
 import FormularioPeliculas from "./FormularioPeliculas";
+import { peliculaCreacionDTO, peliculasPutGetDTO } from "./Pelicula.model";
 
 export default function EditarPeliculas(){
+    const [pelicula,setPelicula] = useState<peliculaCreacionDTO>()
+    const [peliculaPutGet,setPeliculaPutGet] = useState<peliculasPutGetDTO>()
+    const [errores,setError] = useState<string[]>([]);
+    const {id}: any = useParams()
+    const history = useHistory();
 
-        const generos: generoDTO[]=[{Id: 2, nombre:'Drama'},
-        {Id: 3, nombre:'Comedia'}]
+    useEffect(()=>{
+        axios.get(`${urlPeliculas}/PutGet/${id}`)
+        .then((respuesta:AxiosResponse<peliculasPutGetDTO>)=>{
+            const modelo: peliculaCreacionDTO = {
+                titulo:respuesta.data.pelicula.titulo,
+                enCines:respuesta.data.pelicula.enCines,
+                trailer:respuesta.data.pelicula.trailer,
+                posterURL:respuesta.data.pelicula.poster,
+                resumen:respuesta.data.pelicula.resumen,
+                fechaLanzamiento: new Date(respuesta.data.pelicula.fechaLanzamiento),
+            }  
+            
+            setPelicula(modelo)
+            setPeliculaPutGet(respuesta.data);
+        })
+    },[id])
 
-        const generosSelect: generoDTO[]=[{Id:1, nombre:'Accion'}]
-
-        const cines: cinesDTO[]=[{Id: 2, nombre:'dos'},
-        {Id: 3, nombre:'tres'}]
-
-        const cinesSelect: generoDTO[]=[{Id:1, nombre:'unos'}]
-
-        const actoresSeleccionados:actorPeliculaDTO[] =[
-            {Id:1, nombre:'Tomy',personaje:'pp',foto:'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'},
-            {Id:3, nombre:'Paco',personaje:'aa',foto:'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'},
-        ]
+    async function editar(peliculaEditar:peliculaCreacionDTO){
+   
+        try{
+            const formData = convertirPeliculasAFormData(peliculaEditar)
+            
+            await axios({
+                method:'put',
+                url:`${urlPeliculas}/${id}`,
+                data: formData,
+                headers: {'Content-Type':'multipart/form-data'}
+            })
+            history.push(`/peliculas/${id}`)
+        }catch(error:any){
+            setError(error.response.data)
+        }
+    }
 
     return(
         <>
             <h3>Editar Peliculas</h3>
-            <FormularioPeliculas
-                actoresSeleccionados={actoresSeleccionados}
-                cinesNoSeleccionados={cines}
-                cinesSeleccionados={cinesSelect}
-                generosNoSeleccionados={generos}
-                generosSeleccionados={generosSelect}
-                modelo={{titulo:'Spiner Man',enCines:true,trailer:'URL',fechaLanzamiento:new Date("2021-01-01T00:00:00")}}
-                onSubmit={valor=> console.log(valor)}
-            />
+            <MostrarErrores errores={errores}/>
+            {pelicula && peliculaPutGet ? 
+                <FormularioPeliculas
+                    actoresSeleccionados={peliculaPutGet.actores}
+                    cinesNoSeleccionados={peliculaPutGet.cinesNoSeleccionados}
+                    cinesSeleccionados={peliculaPutGet.cinesSeleccionados}
+                    generosNoSeleccionados={peliculaPutGet.generosNoSeleccionados}
+                    generosSeleccionados={peliculaPutGet.generosSeleccionados}
+                    modelo={pelicula}
+                    onSubmit={async valor=> editar(valor)}/>
+                :<Cargando/>}
+            
         </>
     )
 }

@@ -1,28 +1,63 @@
-import { cinesDTO } from "../cines/Cines.mode";
+import axios, { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { generoDTO } from "../generos/generos.model";
+import Cargando from "../utils/Cargando";
+import { urlPeliculas } from "../utils/endpoints";
+import { convertirPeliculasAFormData } from "../utils/FormDate";
+import MostrarErrores from "../utils/MostrarErrores";
 import FormularioPeliculas from "./FormularioPeliculas";
+import { peliculaCreacionDTO, PeliculaPostGet } from "./Pelicula.model";
 
 export default function CrearPeliculas(){
-    const generos: generoDTO[]=[{Id:1, nombre:'Accion'},
-    {Id: 2, nombre:'Drama'},
-    {Id: 3, nombre:'Comedia'}]
+    const history = useHistory()
 
-    const cines: cinesDTO[]=[{Id:1, nombre:'uno'},
-    {Id: 2, nombre:'dos'},
-    {Id: 3, nombre:'tres'}]
+    const [generosNoSeleccionados,setGenerosNoSeleccionados] = useState<generoDTO[]>([])
+    const [cinesNoSeleccionados,setcinesNoSeleccionados] = useState<generoDTO[]>([])
+    const [cargado,setCargado] = useState(false)
+    const [errores,setErrores] = useState<string[]>([]) 
+
+    useEffect(()=>{
+        axios.get(`${urlPeliculas}/postget`)
+        .then((respuesta:AxiosResponse<PeliculaPostGet>)=>{
+            setGenerosNoSeleccionados(respuesta.data.generos)
+            setcinesNoSeleccionados(respuesta.data.cines)
+            setCargado(true);
+        })
+    },[])
+
+    async function  crear(pelicula:peliculaCreacionDTO) {
+        try{
+            const formData = convertirPeliculasAFormData(pelicula);
+            await axios({
+                 method : 'post',
+                 url:urlPeliculas,
+                 data:formData,
+                 headers:{'Content-Type':'multipart/form-data'}
+            }).then((respuesta:AxiosResponse<number>)=>{
+                console.log(`/peliculas/${respuesta.data}`)
+                history.push(`/peliculas/${respuesta.data}`)
+            })
+        }catch(error:any){
+            setErrores(error)
+        }
+    }
 
     return(
         <>
             <h3>Crear Peliculas</h3>
-            <FormularioPeliculas 
+            <MostrarErrores errores={errores}/>
+            {cargado?
+                <FormularioPeliculas 
                 actoresSeleccionados ={[]}
-                cinesNoSeleccionados={cines}
+                cinesNoSeleccionados={cinesNoSeleccionados}
                 cinesSeleccionados={[]}
-                generosNoSeleccionados={generos}
+                generosNoSeleccionados={generosNoSeleccionados}
                 generosSeleccionados={[]}
                 modelo={{titulo:'',enCines:false,trailer:''}}
-                onSubmit={valor=> console.log(valor)}
-            />
+                onSubmit={async valor=> crear(valor)}/>
+            :<Cargando/>}
+            
         </>
     )
 }

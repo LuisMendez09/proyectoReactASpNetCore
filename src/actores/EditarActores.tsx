@@ -1,17 +1,33 @@
+import EditarEntidad from "../utils/EditarEntidad";
+import { urlActores } from "../utils/endpoints";
+import { convertirActorAFormData } from "../utils/FormDate";
+import { actorCreacionDTO, actorDTO } from "./actores.model";
 import FormularioActores from "./FormularioActores";
 
 export default function EditarActores(){
+    const transformar = (actor:actorDTO)=>{
+        return{
+            nombre:actor.nombre,
+            fotoURL:actor.foto,
+            biografia: actor.biografia,
+            fechaNacimiento:new Date(actor.fechaNacimiento)
+        }
+    }
+
     return(
         <>
-            <h3>Editar actores</h3>
-            <FormularioActores 
-            modelo={{
-                nombre:"Tomy", 
-                biografia: `# titulo
-elstro esa en **negritas**`,
-                fechaNacimiento:new Date('1996-06-01T00:00:00'),
-                fotoURL: 'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'}}
-            onSubmit={valores=>console.log(valores)} />
+            
+            <EditarEntidad<actorCreacionDTO,actorDTO>
+            url={urlActores} urlIndice='/actores' nombreEntidad='Actores'
+            transformarFormData={convertirActorAFormData}
+            transformar={transformar}>
+               {(entidad,editar)=>
+                    <FormularioActores 
+                    modelo={entidad} 
+                    onSubmit={async valores=> await editar(valores)} />
+               
+               }
+           </EditarEntidad>
         </>
     )
 }

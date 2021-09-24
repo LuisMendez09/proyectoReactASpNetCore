@@ -5,7 +5,7 @@ export interface cinesCreacionDTO{
 } 
 
 export interface cinesDTO{
-    Id: number;
+    id: number;
     nombre: string;
     latitud?: number;
     longitud?: number;

@@ -1,20 +1,22 @@
-import { useParams } from "react-router"
+import EditarEntidad from "../utils/EditarEntidad"
+import { urlGeneros } from "../utils/endpoints"
 import FormularioGeneros from "./FormularioGeneros"
+import { generoCreacionDTO, generoDTO } from "./generos.model"
 
 export default function EditarGeneros(){
-    const {id}:any = useParams()
+   
 
     return(
-        <>
-            <h3>editar generos</h3>
-            <h4>El id es {id}</h4>
-
-            <FormularioGeneros modelo={{nombre: 'Accion'}}
+        <EditarEntidad<generoCreacionDTO,generoDTO>
+        url={urlGeneros} urlIndice='/generos' nombreEntidad='Generos'>
+            {(entidad,editar)=>
+                <FormularioGeneros 
+                modelo={entidad}
                 onSubmit={async  valores=>{
-                    await new Promise(r=>{setTimeout(r,1500)})
-                    console.log(`1500 ${valores}`)
-                }}
-            />
-        </>
+                    await editar(valores)
+                }}/>
+            
+            }
+        </EditarEntidad>
     )
 }

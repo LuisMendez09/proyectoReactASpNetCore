@@ -13,6 +13,7 @@ import { useState } from "react";
 import { cinesDTO } from "../cines/Cines.mode";
 import TypeAheadActores from "../actores/TypeAheadActore";
 import { actorPeliculaDTO } from "../actores/actores.model";
+import FormGroupMarkdown from "../utils/FormGroupMarkdown";
 
 export default function FormularioPeliculas(props: formularioPeliculasProps){
     const [generosSeleccionados, setGenerosSeleccionados] = 
@@ -30,9 +31,9 @@ export default function FormularioPeliculas(props: formularioPeliculasProps){
     const[actoresSeleccionados,setActoresSeleccionados] 
     = useState<actorPeliculaDTO[]>(props.actoresSeleccionados)
 
-    function maper(arreglo:{Id:number, nombre:string}[]):selectorMultipleModel[]{
+    function maper(arreglo:{id:number, nombre:string}[]):selectorMultipleModel[]{
         return arreglo.map(valor=>{
-            return {llave:valor.Id,valor:valor.nombre}
+            return {llave:valor.id,valor:valor.nombre}
         })
     }
 
@@ -57,7 +58,8 @@ export default function FormularioPeliculas(props: formularioPeliculasProps){
                     <FormGroupText label='Trailer' campo='trailer'/>
                     <FormGroupFecha label='Fecha Lanzamineto' campo='fechaLanzamiento'/>
                     <FormGroupImagen label='poster' campo='poster' imagenURL={props.modelo.posterURL}/>
-                
+                    <FormGroupMarkdown label='Resumen' campo='resumen'/>
+
                     <div className='form-group'>
                         <label>Generos</label>
                         <SelectorMultiple
@@ -96,10 +98,10 @@ export default function FormularioPeliculas(props: formularioPeliculasProps){
                             listadoUI={(actor:actorPeliculaDTO)=>
                             <>
                                 {actor.nombre} / <input placeholder='Personaje'
-                                type='text' value={actor.personaje}
+                                type='text' value={actor.personaje?actor.personaje:""}
                                 onChange={e=>{
                                     const indice = actoresSeleccionados
-                                    .findIndex(x=>x.Id===actor.Id);
+                                    .findIndex(x=>x.id===actor.id);
 
                                     const actores = [...actoresSeleccionados]
                                     actores[indice].personaje = e.currentTarget.value

@@ -1,19 +1,30 @@
+import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
-import { Typeahead } from "react-bootstrap-typeahead";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { ReactElement } from "react-markdown/lib/react-markdown";
+import { urlActores } from "../utils/endpoints";
 import { actorPeliculaDTO } from "./actores.model";
 
+/** componente para filtrar la lista de los actores */
 export default function TypeAheadActores(props: typeAheadActoresProps){
-    const actores:actorPeliculaDTO[] =[
-        {Id:1, nombre:'Tomy',personaje:'',foto:'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'},
-        {Id:2, nombre:'Roberto',personaje:'',foto:'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'},
-        {Id:3, nombre:'Paco',personaje:'',foto:'https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg'},
-    ]
+    const [estaCargando,setEstaCargando] = useState(false)
+    const [opciones,setOpciones] = useState<actorPeliculaDTO[]>([])
 
     const seleccion:actorPeliculaDTO[]=[];
 
     const[elementoArrastrado,setElementoArrastrado]=
     useState<actorPeliculaDTO|undefined>(undefined)
+
+    function manejarBusqueda(query:string){
+        setEstaCargando(true);
+        axios.get(`${urlActores}/buscarPorNombre/${query}`)
+        .then((respuesta:AxiosResponse<actorPeliculaDTO[]>)=>{
+            setOpciones(respuesta.data)
+            setEstaCargando(false)
+        })
+
+    }
+
     function manejarDragStart(actor:actorPeliculaDTO){
         setElementoArrastrado(actor)
     }
@@ -23,11 +34,11 @@ export default function TypeAheadActores(props: typeAheadActoresProps){
             return;
         }
 
-        if(actor.Id!== elementoArrastrado.Id){
+        if(actor.id!== elementoArrastrado.id){
             const elementoArrastradoIndice = 
-                props.actores.findIndex(x=>x.Id === elementoArrastrado.Id)
+                props.actores.findIndex(x=>x.id === elementoArrastrado.id)
             const actorIndice = 
-                props.actores.findIndex(x=>x.Id === actor.Id)
+                props.actores.findIndex(x=>x.id === actor.id)
 
             const actores = [...props.actores]
             actores[actorIndice] = elementoArrastrado
@@ -39,16 +50,18 @@ export default function TypeAheadActores(props: typeAheadActoresProps){
     return(
        <>
         <label>Actores</label>
-        <Typeahead
+        <AsyncTypeahead
             id='typeAhead'
             onChange={actores=>{
-                if(props.actores.findIndex(x=>x.Id === actores[0].Id)===-1){
+                if(props.actores.findIndex(x=>x.id === actores[0].id)===-1){
                     props.onAdd([...props.actores,actores[0]])
                 }
             }}
-            options={actores}
+            options={opciones}
             labelKey={actor=>actor.nombre}
-            filterBy={['nombre']}
+            filterBy={()=>true}
+            isLoading={estaCargando}
+            onSearch={manejarBusqueda}
             placeholder='Escriba el nombre del actor...'
             minLength={2}
             flip={true}
@@ -66,14 +79,15 @@ export default function TypeAheadActores(props: typeAheadActoresProps){
             )}
         />
 
-        <ul className='list-group'>
+        {props.actores ? 
+            <ul className='list-group'>
             {props.actores.map(actor => 
                 <li 
                 draggable={true}
                 onDragStart={()=>manejarDragStart(actor)}
                 onDragOver={()=>manejarDragOver(actor)}
                 className='list-group-item list-group-item-action'
-                key={actor.Id}>
+                key={actor.id}>
                     {props.listadoUI(actor)}
                     <span className='badge badge-primary badge-pill pointer'
                     style={{marginLeft: '0.5rem'}}
@@ -83,6 +97,8 @@ export default function TypeAheadActores(props: typeAheadActoresProps){
                     </span>
                 </li>)}
         </ul>
+        : null }
+        
        </>
     )
 }
