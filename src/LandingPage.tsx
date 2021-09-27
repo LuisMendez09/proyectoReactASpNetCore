@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
+import Autorizado from "./auth/Autorizado"
 import ListadoPeliculas from "./peliculas/ListadoPeliculas"
 import { landingPageDTO } from "./peliculas/Pelicula.model"
 import AlertaContext from "./utils/AlertaContext"
@@ -23,6 +24,11 @@ export default function LandingPage(){
     
     return(
         <>
+            <Autorizado 
+            autorizado={<>Esta autorizado</>} 
+            noAutorizado={<>No esta autorizado</>}
+            role='admin'/>
+
             <AlertaContext.Provider value={() => cargarDatos()}>
                 <h3>En cartelera</h3>
                 <ListadoPeliculas peliculas={peliculas.enCines}/>

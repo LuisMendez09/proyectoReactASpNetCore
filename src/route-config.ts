@@ -19,21 +19,21 @@ import FiltroPeliculas from "./peliculas/FiltroPeliculas";
 import RedireccionarALanding from "./utils/RedireccionarALanding";
 
 const rutas = [
-    {path:'/generos/crear', componente: CrearGeneros},
-    {path:'/generos/editar/:id(\\d+)', componente: EditarGeneros},
-    {path:'/generos', componente: IndiceGeneros, exact: true},
+    {path:'/generos/crear', componente: CrearGeneros, esAdmin:true},
+    {path:'/generos/editar/:id(\\d+)', componente: EditarGeneros, esAdmin:true},
+    {path:'/generos', componente: IndiceGeneros, exact: true, esAdmin:true},
 
-    {path:'/actores/crear', componente: CrearActores},
-    {path:'/actores/editar/:id(\\d+)', componente: EditarActores},
-    {path:'/actores', componente: IndiceActores, exact: true},
+    {path:'/actores/crear', componente: CrearActores, esAdmin:true},
+    {path:'/actores/editar/:id(\\d+)', componente: EditarActores, esAdmin:true},
+    {path:'/actores', componente: IndiceActores, exact: true, esAdmin:true},
 
-    {path:'/cines/crear', componente: CrearCines},
-    {path:'/cines/editar/:id(\\d+)', componente: EditarCines},
-    {path:'/cines', componente: IndiceCines, exact: true},
+    {path:'/cines/crear', componente: CrearCines, esAdmin:true},
+    {path:'/cines/editar/:id(\\d+)', componente: EditarCines, esAdmin:true},
+    {path:'/cines', componente: IndiceCines, exact: true, esAdmin:true},
 
     {path:'/peliculas/:id(\\d+)', componente: DetallePelicula},
-    {path:'/peliculas/crear', componente: CrearPeliculas},
-    {path:'/peliculas/editar/:id(\\d+)', componente: EditarPeliculas},
+    {path:'/peliculas/crear', componente: CrearPeliculas, esAdmin:true},
+    {path:'/peliculas/editar/:id(\\d+)', componente: EditarPeliculas, esAdmin:true},
     {path:'/peliculas/filtrar', componente: FiltroPeliculas},
 
     {path:'/', componente: LandingPage, exact: true},

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import Autorizado from '../auth/Autorizado'
 import AlertaContext from '../utils/AlertaContext'
 import Button from '../utils/Button'
 import Confirmar from '../utils/Confirmar'
@@ -29,13 +30,19 @@ export default function PeliculaIndividual(props: peliculaIndividualProps){
             <p>
                 <a href={link}>{props.pelicula.titulo}</a>
             </p>
-            <div>
-                <Link style={{marginRight:'1rem'}} className='btn btn-info'
-                to={`/peliculas/editar/${props.pelicula.id}`}>Editar</Link>
-                <Button 
-                onClick={()=>Confirmar(()=>borrarPelicula())}
-                className='btn btn-danger'>Borran</Button>
-            </div>
+
+            <Autorizado
+                role='admin'
+                autorizado={
+                    <div>
+                        <Link style={{marginRight:'1rem'}} className='btn btn-info'
+                        to={`/peliculas/editar/${props.pelicula.id}`}>Editar</Link>
+                        <Button 
+                        onClick={()=>Confirmar(()=>borrarPelicula())}
+                        className='btn btn-danger'>Borran</Button>
+                    </div>
+                }
+            />
         </div>
     )
 }
