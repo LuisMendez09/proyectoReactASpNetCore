@@ -12,3 +12,8 @@ export interface respuetaAutenticacion{
     token:string;
     expiracion:Date,
 }
+
+export interface usuarioDTO{
+    id:string;
+    email:string;
+}

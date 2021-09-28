@@ -1,6 +1,7 @@
 import CrearActores from "./actores/CrearActores";
 import EditarActores from "./actores/EditarActores";
 import IndiceActores from "./actores/IndiceActores";
+import IndiceUsuario from "./auth/IndiceUsuario";
 import Login from "./auth/Login";
 import Registro from "./auth/Registro";
 
@@ -40,6 +41,7 @@ const rutas = [
 
     {path:'/registro', componente: Registro},
     {path:'/login', componente: Login},
+    {path:'/usuarios', componente: IndiceUsuario, esAdmin:true},
 
     {path:'/', componente: LandingPage, exact: true},
     {path: '*',componente:RedireccionarALanding}

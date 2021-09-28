@@ -51,9 +51,10 @@ export default function IndiceEntidad<T>(props:indiceEntidadProps<T>){
     return(
         <>
             <h3>{props.titulo}</h3>
+            {props.urlCreacion ? 
             <Link className='btn btn-primary' to={props.urlCreacion}>
                 Crear {props.nombreEntidad}
-            </Link>
+            </Link>:null}
 
             <div className='form-group' style={{width: '150px'}}>
                 <label>Registros por pagina:</label>
@@ -84,8 +85,8 @@ export default function IndiceEntidad<T>(props:indiceEntidadProps<T>){
 
 interface indiceEntidadProps<T>{
     url:string;
-    urlCreacion:string;
+    urlCreacion?:string;
     children(entidad: T[],botones:(urlEditar:string,id:number)=>ReactElement):ReactElement;
     titulo: string;
-    nombreEntidad:string;
+    nombreEntidad?:string;
 }
