@@ -24,11 +24,11 @@ export default function PeliculaIndividual(props: peliculaIndividualProps){
 
     return(
         <div className={css.div}>
-            <a href={link}>
+            <Link to={link}>
                 <img src={props.pelicula.poster} alt="poster"/>
-            </a>
+            </Link>
             <p>
-                <a href={link}>{props.pelicula.titulo}</a>
+                <Link to={link}>{props.pelicula.titulo}</Link>
             </p>
 
             <Autorizado

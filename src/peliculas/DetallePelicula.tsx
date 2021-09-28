@@ -33,8 +33,9 @@ export default function DetallePelicula(){
     }
 
     function generarUrlYoutubeEmbebido(url:any):string{
-   
-        if(url){
+        console.log(url)
+
+        if(url && url!=='null'){
             var vide_id=url.split('v=')[1]
             var poosicionAmpersand = vide_id.indexOf('&')
 

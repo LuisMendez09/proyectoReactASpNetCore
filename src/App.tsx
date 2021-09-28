@@ -6,19 +6,21 @@ import configurarValidaciones from './validaciones';
 import AutentizacionContext from './auth/AutentizacionContext';
 
 import Menu from './utils/Menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { claim } from './auth/auth.model';
+import { obtenerClaims } from './auth/ManejadorJwt';
 
 configurarValidaciones();
 
 function App() {  
-  const[claims,setClaims] = useState<claim[]>([
-    //{nombre:'email',valor:'correo@ssssss.com'},
-    //{nombre:'role',valor:'admin'}
-  ])
+  const[claims,setClaims] = useState<claim[]>([])
   function actualizar(claims:claim[]){
     setClaims(claims)
   }
+
+  useEffect(()=>{
+    setClaims(obtenerClaims())
+  },[])
 
   function esAdmin(){
     //funcion para validar si el usuario tiene el rol admin

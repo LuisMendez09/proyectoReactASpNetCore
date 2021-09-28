@@ -1,8 +1,17 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import AutentizacionContext from "../auth/AutentizacionContext";
 import Autorizado from "../auth/Autorizado";
+import { logout } from "../auth/ManejadorJwt";
+import Button from "./Button";
 
 export default function Menu(){
-const claseActiva = 'active'
+    const claseActiva = 'active'
+    const {actualizar,claims} = useContext(AutentizacionContext)
+
+    function obtenerNombreUsuario():string{
+        return claims.filter(x=>x.nombre ==='email')[0]?.valor;
+    }
 
     return (
         <nav className='navbar navbar-expand-lg navbar-light bg-light'>
@@ -66,7 +75,10 @@ const claseActiva = 'active'
 
                     <div className='d-flex'>
                         <Autorizado
-                            autorizado={<></>}
+                            autorizado={<>
+                                <span className='nav-link'>Hola, {obtenerNombreUsuario()}</span>
+                                <Button onClick={()=>{logout(); actualizar([]);}}>Log out</Button>
+                            </>}
                             noAutorizado={<>
                                 <Link to='/registro' className='nav-link btn btn-link' >Registro</Link>
                                 <Link to='/login' className='nav-link btn btn-link' >Login</Link>
