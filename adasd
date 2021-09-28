@@ -1,0 +1,23 @@
+[33mcommit 8370130530192f5fb758729a858751baedda0d62[m[33m ([m[1;36mHEAD -> [m[1;32mseguridad[m[33m)[m
+Author: Luis Mendez <luis009alberto@gmail.com>
+Date:   Mon Sep 27 10:07:48 2021 -0700
+
+    se agregaro el componente autorizado, su modelo y sus contect, para la utilizacion de los claims, se configuro el menu y las rutas para el proquo por rol. clase 150, 151, 152
+
+[33mcommit 4ab888080486bce5b7e9b315039ab11f78c545d3[m[33m ([m[1;31morigin/conexionApi[m[33m, [m[1;32mconfiguracion[m[33m, [m[1;32mconexionApi[m[33m)[m
+Author: Luis Mendez <luis009alberto@gmail.com>
+Date:   Fri Sep 24 16:14:49 2021 -0700
+
+    consumier el API creado en Net core y crear las diferentes acciones para la pagina como la consulta,creacion,edicon y eliminacion
+
+[33mcommit c6af36b2f6066076562622ffeb39957a3098f94e[m[33m ([m[1;31morigin/configuracion[m[33m, [m[1;32mmain[m[33m)[m
+Author: Luis Mendez <luis009alberto@gmail.com>
+Date:   Tue Sep 14 16:50:27 2021 -0700
+
+    preparacion de proyecto react
+
+[33mcommit cd2ed8b0a5d4385276a2b3d8c5f53437c48015e3[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Luis Mendez <luis009alberto@gmail.com>
+Date:   Sat Aug 28 09:27:40 2021 -0700
+
+    agregar a repositorio remoto

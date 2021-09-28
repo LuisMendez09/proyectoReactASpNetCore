@@ -1,6 +1,8 @@
 import CrearActores from "./actores/CrearActores";
 import EditarActores from "./actores/EditarActores";
 import IndiceActores from "./actores/IndiceActores";
+import Login from "./auth/Login";
+import Registro from "./auth/Registro";
 
 import CrearCines from "./cines/CrearCines";
 import EditarCines from "./cines/EditarCines";
@@ -35,6 +37,9 @@ const rutas = [
     {path:'/peliculas/crear', componente: CrearPeliculas, esAdmin:true},
     {path:'/peliculas/editar/:id(\\d+)', componente: EditarPeliculas, esAdmin:true},
     {path:'/peliculas/filtrar', componente: FiltroPeliculas},
+
+    {path:'/registro', componente: Registro},
+    {path:'/login', componente: Login},
 
     {path:'/', componente: LandingPage, exact: true},
     {path: '*',componente:RedireccionarALanding}
