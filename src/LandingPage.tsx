@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
-import Autorizado from "./auth/Autorizado"
 import ListadoPeliculas from "./peliculas/ListadoPeliculas"
 import { landingPageDTO } from "./peliculas/Pelicula.model"
 import AlertaContext from "./utils/AlertaContext"

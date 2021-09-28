@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router"
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import Cargando from "../utils/Cargando";
 import { coordenadasDTO } from "../utils/Coordenadas.model";
-import { urlPeliculas } from "../utils/endpoints";
+import { urlPeliculas, urlRatings } from "../utils/endpoints";
 import Mapa from "../utils/Mapa";
+import Rating from "../utils/Rating";
 import { peliculaDTO } from "./Pelicula.model";
 
 export default function DetallePelicula(){
@@ -49,6 +51,12 @@ export default function DetallePelicula(){
         return ''
     }
 
+    async function onVoto(voto:number){
+        await axios.post(urlRatings,{puntuacion:voto,peliculaId:id})
+        
+        Swal.fire({icon:'success', title:'Voto recibido'})
+    }
+
     return(
         pelicula?
         <div style={{display:'flex'}}>
@@ -62,6 +70,7 @@ export default function DetallePelicula(){
                 {genero.nombre}
                 </Link>)}
                 |{pelicula.fechaLanzamiento.toDateString()}
+                |Ty vot: <Rating maximoValor={5} valorSeleccionado={3} onChange={onVoto}/>
 
                 <div style={{display:'flex',marginRight:'1rem'}}>
                     <span style={{display:'inline-block',marginRight:'1rem'}}>
