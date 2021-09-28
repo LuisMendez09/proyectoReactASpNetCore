@@ -69,8 +69,9 @@ export default function DetallePelicula(){
                     to={`/peliculas/filtrar?genero=${genero.id}`}>
                 {genero.nombre}
                 </Link>)}
-                |{pelicula.fechaLanzamiento.toDateString()}
-                |Ty vot: <Rating maximoValor={5} valorSeleccionado={3} onChange={onVoto}/>
+                | {pelicula.fechaLanzamiento.toDateString()}
+                | Voto promedio:{pelicula.promedioVoto}
+                | Tu voto: <Rating maximoValor={5} valorSeleccionado={pelicula.votoUsuario!} onChange={onVoto}/>
 
                 <div style={{display:'flex',marginRight:'1rem'}}>
                     <span style={{display:'inline-block',marginRight:'1rem'}}>

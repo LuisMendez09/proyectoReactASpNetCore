@@ -9,8 +9,10 @@ import Menu from './utils/Menu';
 import { useEffect, useState } from 'react';
 import { claim } from './auth/auth.model';
 import { obtenerClaims } from './auth/ManejadorJwt';
+import { configurarInterceptores } from './utils/interceptores';
 
 configurarValidaciones();
+configurarInterceptores();
 
 function App() {  
   const[claims,setClaims] = useState<claim[]>([])

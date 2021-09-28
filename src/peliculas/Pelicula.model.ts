@@ -13,6 +13,8 @@ export interface peliculaDTO{
     cines: cinesDTO[];
     generos: generoDTO[];
     actores: actorPeliculaDTO[];
+    votoUsuario?: number;
+    promedioVoto?: number;
 }
 
 export interface peliculaCreacionDTO{

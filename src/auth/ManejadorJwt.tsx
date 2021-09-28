@@ -36,3 +36,7 @@ export function logout(){
     localStorage.removeItem(llaveToken)
     localStorage.removeItem(llaveExpiracion)
 }
+
+export function obtenerToken(){
+    return localStorage.getItem(llaveToken)
+}
